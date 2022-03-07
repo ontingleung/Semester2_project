@@ -127,17 +127,19 @@ void DisplayNums(int *userguess)
 void SortNums(int *userguess)
 {
     int i, key, j;
-    for (i = 1; i < n; i++) {
-        key = arr[i];
+    for (i = 1; i < SIZE; i++) 
+    {
+        key = userguess[i];
         j = i - 1;
  
-        /* Move elements of arr[0..i-1], that are
+        /* Move elements of [0..i-1], that are
           greater than key, to one position ahead
           of their current position */
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
+        while (j >= 0 && userguess[j] > key) 
+        {
+            userguess[j + 1] = userguess[j];
             j = j - 1;
         }
-        arr[j + 1] = key;
+        userguess[j + 1] = key;
     }
 }
