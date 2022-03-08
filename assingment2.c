@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 
+
 #define SIZE 6
 
 // Option 1
@@ -18,9 +19,14 @@ void DisplayNums(int *);
 void SortNums(int *);
 
 // Option 4
-
+void WinningNums(int *);
 // Option 5
+void Frequency();
 
+// Option 6
+int ExitGame();
+
+// Start of Main()
 int main()
 {
     int options;
@@ -68,6 +74,7 @@ int main()
 
             case 4:
             {
+                WinningNums(userguess);
 
                 break;
             } // end case 4
@@ -81,7 +88,7 @@ int main()
 
             case 6:
             {
-                printf("Are you sure you want to exit?\n (y/n)");
+                options = ExitGame();
 
                 break;
             } // end case 6
@@ -94,12 +101,13 @@ int main()
                 break;
             } // end default
 
-            } // end switch
+        } // end switch
 
-    } while (options != 6);
+    } while (options != 7);
     // end do while
     return 0;
 }
+//End of Main
 
 void EnterNums(int *userguess)
 {
@@ -107,7 +115,9 @@ void EnterNums(int *userguess)
 
     for (int i = 0; i < SIZE; i++)
     {
-        scanf("%d", userguess + i);
+        scanf("%d\n", userguess + i);
+
+        while
     }
 }
 
@@ -124,6 +134,7 @@ void DisplayNums(int *userguess)
     printf(" }\n");
 }
 
+// Incersion Sort
 void SortNums(int *userguess)
 {
     int i, key, j;
@@ -132,9 +143,6 @@ void SortNums(int *userguess)
         key = userguess[i];
         j = i - 1;
  
-        /* Move elements of [0..i-1], that are
-          greater than key, to one position ahead
-          of their current position */
         while (j >= 0 && userguess[j] > key) 
         {
             userguess[j + 1] = userguess[j];
@@ -142,4 +150,36 @@ void SortNums(int *userguess)
         }
         userguess[j + 1] = key;
     }
+}
+
+// Compares with winning numbs
+void WinningNums(int *userguess)
+{
+    int winning[6] = {2, 10, 27, 30, 33, 41};
+
+
+
+    {
+        printf("\nPlease select first option [3] to sort your guesses\n");
+    }
+}
+
+// 5
+
+// 6
+int ExitGame()
+{
+    char econ;
+
+    printf("Are you sure you want to exit program? (y/n)\n");
+    scanf("%c", &econ);
+
+    if (econ == 'y' || econ == 'Y')
+    {
+        printf("\n\nExiting Program\n\n\n");
+
+        return 7;
+    }
+    
+    return 6;
 }
