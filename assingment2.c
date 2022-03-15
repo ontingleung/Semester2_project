@@ -1,27 +1,29 @@
 /*
+Assingment 2 
+Lotto Game: User must enter 6 guesses to win prize.
 
-
-
+Author : Onting Leung (C21308733)
+Date: 14/03/2022
 */
 
 #include <stdio.h>
 
-
 #define SIZE 6
+#define COUNT 42
 
 // Option 1
-void EnterNums(int *);
+void EnterNums(int *, int *);
 
 // Option 2
 void DisplayNums(int *);
 
 // Option 3
-void SortNums(int *);
+void SortNums(int *, int *);
 
 // Option 4
-void WinningNums(int *);
+void WinningNums(int *, int *);
 // Option 5
-void Frequency();
+void Frequency(int *);
 
 // Option 6
 int ExitGame();
@@ -31,6 +33,8 @@ int main()
 {
     int options;
     int userguess[SIZE] = {0};
+    int guesscount[COUNT] = {0};
+    static int sorted = 0, passedone = 0;
 
     do
     {
@@ -51,55 +55,63 @@ int main()
         switch (options)
         {
 
-            case 1:
-            {
-                EnterNums(userguess);
+        case 1:
+        {
+            EnterNums(userguess, guesscount);
+            passedone = 1;
+            break;
+        } // end case 1
 
-                break;
-            } // end case 1
-
-            case 2:
+        case 2:
+        {
+            if (passedone == 1)
             {
                 DisplayNums(userguess);
+            }
+            break;
+        } // end case 2
 
-                break;
-            } // end case 2
-
-            case 3:
+        case 3:
+        {   
+            if (passedone == 1)
             {
-                SortNums(userguess);
+                SortNums(userguess, &sorted);
+            }
+            break;
+        } // end case 3
 
-                break;
-            } // end case 3
-
-            case 4:
+        case 4:
+        {
+            if (passedone == 1)
             {
-                WinningNums(userguess);
+                WinningNums(userguess, &sorted);
+            }
+            break;
+        } // end case 4
 
-                break;
-            } // end case 4
-
-            case 5:
+        case 5:
+        {
+            if (passedone == 1)
             {
+                Frequency(guesscount);
+            }
+            break;
+        } // end case 5
 
+        case 6:
+        {
+            options = ExitGame();
 
-                break;
-            } // end case 5
+            break;
+        } // end case 6
 
-            case 6:
-            {
-                options = ExitGame();
+        // If any other number
+        default:
+        {
+            printf("\nInvaild Option\n");
 
-                break;
-            } // end case 6
-
-            // If any other number
-            default:
-            {
-                printf("\nInvaild Option\n");
-
-                break;
-            } // end default
+            break;
+        } // end default
 
         } // end switch
 
@@ -107,11 +119,12 @@ int main()
     // end do while
     return 0;
 }
-//End of Main
+// End of Main
 
-void EnterNums(int *userguess)
+// Allows user to enter their guesses
+void EnterNums(int *userguess, int *guesscount)
 {
-    int guess, i = 0;
+    int guess, d = 0, dups = 0;
 
     printf("Please enter 6 numbers between 1 - 42 (inclusive):\n");
 
@@ -119,31 +132,49 @@ void EnterNums(int *userguess)
     {
         scanf("%d", &guess);
 
-        if (guess < 1 || guess > 42)
+        do
         {
-            printf("\nInvaid\n\n");
-            printf("Please enter 6 numbers between 1 - 42 (inclusive):\n");
-
-        } // end if
-        for (int j = 0; j < SIZE; j++)
-        {
-            if (guess != *(userguess + j))
+            if (guess < 1 || guess > 42)
             {
-                *(userguess + i) = guess;
-                i++;
+                printf("\nInvaid\n\n");
+                printf("Please enter 6 numbers between 1 - 42 (inclusive):\n");
+
+            } // end if
+        } while (guess < 1 || guess > 42);
+
+        *(userguess + d) = guess;
+
+        d++;
+
+        // frequency of inputed numbers 
+        *(guesscount + guess) += 1;
+
+        // checks for any duplicates in array
+        if (d == SIZE)
+        {
+            printf("Duplicates: \n");
+
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = i + 1; j < SIZE; j++)
+                {
+                    if (userguess[i] == userguess[j])
+                    {
+                        printf("%d\n", userguess[j]);
+                        dups = 1;
+                    }
+                }
+            }
+
+            if (dups == 0)
+            {
+                printf("No duplicates\n\n");
             }
         }
-
-        if (guess == *(userguess + i))
-        {
-            printf("\nInvaid\n\n");
-            printf("You can't enter duplicates\n");
-        }
-
-    } while (i < SIZE);
-    
+    } while (d < SIZE);
 }
 
+//  Displays the users guesses
 void DisplayNums(int *userguess)
 {
 
@@ -158,38 +189,105 @@ void DisplayNums(int *userguess)
 }
 
 // Incersion Sort
-void SortNums(int *userguess)
+void SortNums(int *userguess, int *sorted)
 {
     int i, key, j;
-    for (i = 1; i < SIZE; i++) 
+    for (i = 1; i < SIZE; i++)
     {
         key = userguess[i];
         j = i - 1;
- 
-        while (j >= 0 && userguess[j] > key) 
+
+        while (j >= 0 && userguess[j] > key)
         {
             userguess[j + 1] = userguess[j];
             j = j - 1;
         }
         userguess[j + 1] = key;
     }
+    *sorted = 1;
 }
 
 // Compares with winning numbs
-void WinningNums(int *userguess)
+void WinningNums(int *userguess, int *sorted)
 {
-    int winning[6] = {2, 10, 27, 30, 33, 41};
+    int winning[6] = {1, 2, 3, 8, 9, 10};
+    int won = 1, matches = 6;
 
+    if (*sorted == 1)
+    {
+        printf("\nPRIZES\n");
+        printf("Match 6 : Jackpot\n");
+        printf("Match 5 : New car\n");
+        printf("Match 4 : Weekend Away\n");
+        printf("Match 3 : Cinema Pass\n");
 
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (*(userguess + i) != winning[i])
+            {
+                won = 0;
+                matches--;
+            }
+        }
+        
+        switch (matches)
+        {
+            case 3:
+            {
+                printf("\n\nYou won a Cinema Pass\n");
 
+                break;
+            }
+
+            case 4:
+            {
+                printf("\n\nYou won a Weekend Away\n");
+
+                break;
+            }
+
+            case 5:
+            {
+                printf("\n\nYou won a New Car\n");
+
+                break;
+            }
+
+            case 6:
+            {
+                printf("\n\nYou won the Jackpot\n");
+
+                break;
+            }
+
+            default:
+            {
+                printf("\n\nUnlucky better luck next time\n");
+
+                break;
+            }
+        }
+    }
+
+    if (*sorted == 0)
     {
         printf("\nPlease select first option [3] to sort your guesses\n");
     }
 }
 
-// 5
+// Displays the frequency of inputed numbers by the user
+void Frequency(int *guesscount)
+{
+    for (int i = 0; i < COUNT; i++)
+    {
+        if (*(guesscount + i) != 0)
+        {
+            printf("number %d has been selected %d times.\n", i, *(guesscount + i));
+        }
+    }
+}
 
-// 6
+// Exit Program Function
 int ExitGame()
 {
     char econ;
@@ -203,6 +301,6 @@ int ExitGame()
 
         return 7;
     }
-    
+
     return 6;
 }
