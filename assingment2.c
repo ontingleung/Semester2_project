@@ -111,14 +111,37 @@ int main()
 
 void EnterNums(int *userguess)
 {
+    int guess, i = 0;
+
     printf("Please enter 6 numbers between 1 - 42 (inclusive):\n");
 
-    for (int i = 0; i < SIZE; i++)
+    do
     {
-        scanf("%d\n", userguess + i);
+        scanf("%d", &guess);
 
-        while
-    }
+        if (guess < 1 || guess > 42)
+        {
+            printf("\nInvaid\n\n");
+            printf("Please enter 6 numbers between 1 - 42 (inclusive):\n");
+
+        } // end if
+        for (int j = 0; j < SIZE; j++)
+        {
+            if (guess != *(userguess + j))
+            {
+                *(userguess + i) = guess;
+                i++;
+            }
+        }
+
+        if (guess == *(userguess + i))
+        {
+            printf("\nInvaid\n\n");
+            printf("You can't enter duplicates\n");
+        }
+
+    } while (i < SIZE);
+    
 }
 
 void DisplayNums(int *userguess)
