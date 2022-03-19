@@ -1,8 +1,8 @@
 /*
 Assingment 2 
-Lotto Game: User must enter 6 guesses to win prize.
+Lotto Game: User must enter 6 guesses to win a prize.
 
-Author : Onting Leung (C21308733)
+Author : Onting Leung (C21308733) TU858
 Date: 14/03/2022
 */
 
@@ -158,9 +158,9 @@ void EnterNums(int *userguess, int *guesscount)
             {
                 for (int j = i + 1; j < SIZE; j++)
                 {
-                    if (userguess[i] == userguess[j])
+                    if (*(userguess + i) == *(userguess + j))
                     {
-                        printf("%d\n", userguess[j]);
+                        printf("%d\n", *(userguess + j));
                         dups = 1;
                     }
                 }
